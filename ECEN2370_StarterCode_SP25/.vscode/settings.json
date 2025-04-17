@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "applicationcode.h": "c",
+        "lcd_driver.h": "c"
+    }
+}
