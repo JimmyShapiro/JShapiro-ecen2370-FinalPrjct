@@ -1,3 +1,7 @@
 ../Core/Src/ApplicationCode.c:19:6:ApplicationInit	1
 ../Core/Src/ApplicationCode.c:36:6:LCD_Visual_Demo	1
-../Core/Src/ApplicationCode.c:42:6:LCD_Touch_Polling_Demo	2
+../Core/Src/ApplicationCode.c:41:6:LCD_startScreen	1
+../Core/Src/ApplicationCode.c:46:6:LCD_singlePlayerScreen	1
+../Core/Src/ApplicationCode.c:51:6:LCD_twoPlayerScreen	1
+../Core/Src/ApplicationCode.c:56:6:LCD_touchedButtonPolling	9
+../Core/Src/ApplicationCode.c:97:6:LCD_Touch_Polling_Demo	2

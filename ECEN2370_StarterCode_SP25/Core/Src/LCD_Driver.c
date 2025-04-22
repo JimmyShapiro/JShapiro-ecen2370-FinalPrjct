@@ -228,6 +228,14 @@ void LCD_Draw_Circle_Fill(uint16_t Xpos, uint16_t Ypos, uint16_t radius, uint16_
     }
 }
 
+void LCD_Draw_Box_Fill(uint16_t X_strt_pos, uint16_t Y_strt_pos, uint16_t Xlen, uint16_t Ylen, uint16_t color)
+{
+	for(uint16_t i = 0; i < Xlen; i++)
+	{
+		LCD_Draw_Vertical_Line(i+X_strt_pos, Y_strt_pos, Ylen, color);
+	}
+}
+
 void LCD_Draw_Vertical_Line(uint16_t x, uint16_t y, uint16_t len, uint16_t color)
 {
   for (uint16_t i = 0; i < len; i++)
@@ -314,6 +322,11 @@ void visualDemo(void)
 	LCD_Draw_Circle_Fill(125,150,20,LCD_COLOR_BLACK);
 	HAL_Delay(2000);
 
+	// Test the Draw filled box
+	LCD_Clear(0, LCD_COLOR_WHITE);
+	LCD_Draw_Box_Fill(20, 260, 200, 40, LCD_COLOR_BLACK);
+	HAL_Delay(2000);
+
 	LCD_Clear(0,LCD_COLOR_BLUE);
 	LCD_SetTextColor(LCD_COLOR_BLACK);
 	LCD_SetFont(&Font16x24);
@@ -330,6 +343,249 @@ void visualDemo(void)
 	LCD_DisplayChar(130,160,'l');
 	LCD_DisplayChar(140,160,'d');
 }
+
+void startScreen(void)
+{
+	LCD_SetTextColor(LCD_COLOR_BLACK);
+	LCD_SetFont(&Font16x24);
+
+	LCD_Clear(0, LCD_COLOR_WHITE);
+	LCD_Draw_Box_Fill(20, 260, 200, 40, LCD_COLOR_GREY);
+
+	LCD_DisplayChar(60,275,'T');
+	LCD_DisplayChar(73,275,'w');
+	LCD_DisplayChar(88,275,'o');
+
+	LCD_DisplayChar(105,275,'P');
+	LCD_DisplayChar(115,275,'l');
+	LCD_DisplayChar(123,275,'a');
+	LCD_DisplayChar(133,275,'y');
+	LCD_DisplayChar(145,275,'e');
+	LCD_DisplayChar(156,275,'r');
+
+
+	LCD_Draw_Box_Fill(20, 200, 200, 40, LCD_COLOR_GREY);
+
+	LCD_SetTextColor(LCD_COLOR_BLACK);
+	LCD_SetFont(&Font16x24);
+
+	LCD_DisplayChar(60,215,'O');
+	LCD_DisplayChar(76,215,'n');
+	LCD_DisplayChar(88,215,'e');
+
+	LCD_DisplayChar(105,215,'P');
+	LCD_DisplayChar(115,215,'l');
+	LCD_DisplayChar(123,215,'a');
+	LCD_DisplayChar(133,215,'y');
+	LCD_DisplayChar(145,215,'e');
+	LCD_DisplayChar(156,215,'r');
+
+	LCD_Draw_Box_Fill(20, 45, 200, 135, LCD_COLOR_BLACK);
+	LCD_Draw_Box_Fill(35, 55, 170, 115, LCD_COLOR_BLUE2);
+
+	LCD_Draw_Circle_Fill(48, 68, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(48, 86, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(48, 104, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(48, 122, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(48, 140, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(48, 158, 7, LCD_COLOR_BLACK);
+
+	LCD_Draw_Circle_Fill(72, 68, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(72, 86, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(72, 104, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(72, 122, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(72, 140, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(72, 158, 7, LCD_COLOR_BLACK);
+
+	LCD_Draw_Circle_Fill(96, 68, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(96, 86, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(96, 104, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(96, 122, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(96, 140, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(96, 158, 7, LCD_COLOR_BLACK);
+
+	LCD_Draw_Circle_Fill(120, 68, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(120, 86, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(120, 104, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(120, 122, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(120, 140, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(120, 158, 7, LCD_COLOR_BLACK);
+
+	LCD_Draw_Circle_Fill(144, 68, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(144, 86, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(144, 104, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(144, 122, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(144, 140, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(144, 158, 7, LCD_COLOR_BLACK);
+
+	LCD_Draw_Circle_Fill(168, 68, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(168, 86, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(168, 104, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(168, 122, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(168, 140, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(168, 158, 7, LCD_COLOR_BLACK);
+
+	LCD_Draw_Circle_Fill(192, 68, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(192, 86, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(192, 104, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(192, 122, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(192, 140, 7, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(192, 158, 7, LCD_COLOR_BLACK);
+
+	LCD_DisplayChar(50,20,'C');
+	LCD_DisplayChar(62,20,'o');
+	LCD_DisplayChar(74,20,'n');
+	LCD_DisplayChar(86,20,'n');
+	LCD_DisplayChar(98,20,'e');
+	LCD_DisplayChar(110,20,'c');
+	LCD_DisplayChar(118,20,'t');
+
+	LCD_DisplayChar(135,20,'F');
+	LCD_DisplayChar(147,20,'o');
+	LCD_DisplayChar(159,20,'u');
+	LCD_DisplayChar(171,20,'r');
+
+	HAL_Delay(5000);
+
+}
+
+void singlePlayerScreen(void)
+{
+	LCD_SetTextColor(LCD_COLOR_BLACK);
+	LCD_SetFont(&Font16x24);
+
+	LCD_DisplayChar(68,25,'O');
+	LCD_DisplayChar(84,25,'n');
+	LCD_DisplayChar(96,25,'e');
+
+	LCD_DisplayChar(113,25,'P');
+	LCD_DisplayChar(123,25,'l');
+	LCD_DisplayChar(131,25,'a');
+	LCD_DisplayChar(141,25,'y');
+	LCD_DisplayChar(153,25,'e');
+	LCD_DisplayChar(164,25,'r');
+
+	LCD_Draw_Box_Fill(15, 120, 210, 180, LCD_COLOR_BLUE2);
+
+	LCD_Draw_Circle_Fill(45, 146, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(45, 172, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(45, 198, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(45, 224, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(45, 250, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(45, 276, 8, LCD_COLOR_BLACK);
+
+	LCD_Draw_Circle_Fill(70, 146, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(70, 172, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(70, 198, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(70, 224, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(70, 250, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(70, 276, 8, LCD_COLOR_BLACK);
+
+	LCD_Draw_Circle_Fill(95, 146, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(95, 172, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(95, 198, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(95, 224, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(95, 250, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(95, 276, 8, LCD_COLOR_BLACK);
+
+	LCD_Draw_Circle_Fill(120, 146, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(120, 172, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(120, 198, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(120, 224, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(120, 250, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(120, 276, 8, LCD_COLOR_BLACK);
+
+	LCD_Draw_Circle_Fill(145, 146, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(145, 172, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(145, 198, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(145, 224, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(145, 250, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(145, 276, 8, LCD_COLOR_BLACK);
+
+	LCD_Draw_Circle_Fill(170, 146, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(170, 172, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(170, 198, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(170, 224, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(170, 250, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(170, 276, 8, LCD_COLOR_BLACK);
+
+	LCD_Draw_Circle_Fill(195, 146, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(195, 172, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(195, 198, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(195, 224, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(195, 250, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(195, 276, 8, LCD_COLOR_BLACK);
+}
+
+
+void twoPlayerScreen(void)
+{
+	LCD_SetTextColor(LCD_COLOR_BLACK);
+	LCD_SetFont(&Font16x24);
+
+	LCD_DisplayChar(68,25,'T');
+	LCD_DisplayChar(83,25,'w');
+	LCD_DisplayChar(96,25,'o');
+
+	LCD_DisplayChar(113,25,'P');
+	LCD_DisplayChar(123,25,'l');
+	LCD_DisplayChar(131,25,'a');
+	LCD_DisplayChar(141,25,'y');
+	LCD_DisplayChar(153,25,'e');
+	LCD_DisplayChar(164,25,'r');
+
+	LCD_Draw_Box_Fill(15, 120, 210, 180, LCD_COLOR_BLUE2);
+
+	LCD_Draw_Circle_Fill(45, 146, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(45, 172, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(45, 198, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(45, 224, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(45, 250, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(45, 276, 8, LCD_COLOR_BLACK);
+
+	LCD_Draw_Circle_Fill(70, 146, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(70, 172, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(70, 198, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(70, 224, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(70, 250, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(70, 276, 8, LCD_COLOR_BLACK);
+
+	LCD_Draw_Circle_Fill(95, 146, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(95, 172, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(95, 198, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(95, 224, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(95, 250, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(95, 276, 8, LCD_COLOR_BLACK);
+
+	LCD_Draw_Circle_Fill(120, 146, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(120, 172, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(120, 198, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(120, 224, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(120, 250, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(120, 276, 8, LCD_COLOR_BLACK);
+
+	LCD_Draw_Circle_Fill(145, 146, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(145, 172, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(145, 198, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(145, 224, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(145, 250, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(145, 276, 8, LCD_COLOR_BLACK);
+
+	LCD_Draw_Circle_Fill(170, 146, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(170, 172, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(170, 198, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(170, 224, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(170, 250, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(170, 276, 8, LCD_COLOR_BLACK);
+
+	LCD_Draw_Circle_Fill(195, 146, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(195, 172, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(195, 198, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(195, 224, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(195, 250, 8, LCD_COLOR_BLACK);
+	LCD_Draw_Circle_Fill(195, 276, 8, LCD_COLOR_BLACK);
+}
+
 
 /**
   * @brief  This function is executed in case of error occurrence.

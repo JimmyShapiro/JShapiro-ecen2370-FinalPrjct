@@ -16,6 +16,10 @@
 
 void ApplicationInit(void);
 void LCD_Visual_Demo(void);
+void LCD_startScreen(void);
+void LCD_singlePlayerScreen(void);
+void LCD_twoPlayerScreen(void);
+void LCD_touchedButtonPolling(void);
 
 #if (COMPILE_TOUCH_FUNCTIONS == 1)
 void LCD_Touch_Polling_Demo(void);
