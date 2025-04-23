@@ -16,6 +16,10 @@ extern void initialise_monitor_handles(void);
 static STMPE811_TouchData StaticTouchData;
 #endif // COMPILE_TOUCH_FUNCTIONS
 
+static bool currentColum[6];
+//static bool gameBoardArr[5][6];
+static bool currentPlayer;
+
 void ApplicationInit(void)
 {
 	initialise_monitor_handles(); // Allows printf functionality
@@ -46,54 +50,110 @@ void LCD_startScreen(void)
 void LCD_singlePlayerScreen(void)
 {
 	singlePlayerScreen();
+	currentColum[3] = 1;
+	currentPlayer = PlayerOne;
+	displayCurrentDropCol();
 }
 
 void LCD_twoPlayerScreen(void)
 {
 	twoPlayerScreen();
+	currentColum[3] = 1;
+	currentPlayer = PlayerOne;
+	displayCurrentDropCol();
 }
 
+#if COMPILE_TOUCH_FUNCTIONS == 1
 void LCD_touchedButtonPolling(void)
 {
+	startScreen();
 	bool buttonChosen = 0;
 	while (buttonChosen != 1)
 	{
-		startScreen();
+		//startScreen();
 		if (returnTouchStateAndLocation(&StaticTouchData) == STMPE811_State_Pressed)
 		{
 			/* Touch valid */
-			printf("\nX: %03d\nY: %03d\n", StaticTouchData.x, StaticTouchData.y);
-			if(StaticTouchData.x >= 20 && StaticTouchData.x <= 20)
+			//printf("\nX: %03d\nY: %03d\n", StaticTouchData.x, StaticTouchData.y);
+			if(StaticTouchData.x >= 20 && StaticTouchData.x <= 200)
 			{
-				if(StaticTouchData.y >= 200 && StaticTouchData.x <= 240)
+				if(StaticTouchData.y >= 70 && StaticTouchData.y <= 120)
 				{
-					singlePlayerScreen();
+					LCD_Clear(0, LCD_COLOR_WHITE);
+					LCD_singlePlayerScreen();
 					printf("One Player Button Pressed");
 					buttonChosen = 1;
 				}
-				else if(StaticTouchData.y >= 260 && StaticTouchData.x <= 300)
+				else if(StaticTouchData.y >= 10 && StaticTouchData.y <= 60)
 				{
-					twoPlayerScreen();
+					LCD_Clear(0, LCD_COLOR_WHITE);
+					LCD_twoPlayerScreen();
 					printf("Two Player Button Pressed");
 					buttonChosen = 1;
 				}
 				else
 				{
 					printf("Touch Outside of Target Areas");
-					startScreen();
+					//startScreen();
 				}
+			}
+			printf("\nX: %03d\nY: %03d\n", StaticTouchData.x, StaticTouchData.y);
+		}
+		else
+		{
+			/* Touch not pressed */
+			//printf("Not Pressed\n\n");
+			//startScreen();
+		}
+	}
+}
+
+bool LCD_touchedLeftRight(void)
+{
+	bool sideChosen = 0;
+	printf("In LEFT RIGHT");
+	LCD_Clear(0, LCD_COLOR_BLACK);
+	while (1)
+	{
+		//startScreen();
+		if (returnTouchStateAndLocation(&StaticTouchData) == STMPE811_State_Pressed)
+		{
+			LCD_Clear(0, LCD_COLOR_WHITE);
+			/* Touch valid */
+			if(StaticTouchData.x <= 120)
+			{
+				printf("Left Side chosen");
+				printf("\nX: %03d\nY: %03d\n", StaticTouchData.x, StaticTouchData.y);
+				sideChosen = 0;
+				return sideChosen;
+			}
+			else if(StaticTouchData.x > 120)
+			{
+				printf("Right Side chosen");
+				printf("\nX: %03d\nY: %03d\n", StaticTouchData.x, StaticTouchData.y);
+				sideChosen = 1;
+				return sideChosen;
+			}
+			else
+			{
+				printf("Something is very wrong");
+				printf("\nX: %03d\nY: %03d\n", StaticTouchData.x, StaticTouchData.y);
 			}
 		}
 		else
 		{
 			/* Touch not pressed */
 			printf("Not Pressed\n\n");
-			startScreen();
+			LCD_Clear(0, LCD_COLOR_BLACK);
+			HAL_Delay(500);
+			LCD_Clear(0, LCD_COLOR_RED);
+			HAL_Delay(500);
+			//startScreen();
 		}
 	}
 }
 
-#if COMPILE_TOUCH_FUNCTIONS == 1
+//#if COMPILE_TOUCH_FUNCTIONS == 1
 void LCD_Touch_Polling_Demo(void)
 {
 	LCD_Clear(0,LCD_COLOR_GREEN);
@@ -109,6 +169,58 @@ void LCD_Touch_Polling_Demo(void)
 			LCD_Clear(0, LCD_COLOR_GREEN);
 		}
 	}
+}
+
+void displayCurrentDropCol(void)
+{
+	for(int i=0; i < 6; i++)
+	{
+		uint16_t XPosFill = 0;
+		XPosFill = (45 + (i*25));
+		if(currentColum[i] == 1)
+		{
+			if(currentPlayer == PlayerOne)
+			{
+				LCD_Draw_Circle_Fill(XPosFill, 100, 8, LCD_COLOR_RED);
+			}
+			else
+			{
+				LCD_Draw_Circle_Fill(XPosFill, 100, 8, LCD_COLOR_YELLOW);
+			}
+		}
+		else
+		{
+			LCD_Draw_Circle_Fill(XPosFill, 100, 8, LCD_COLOR_WHITE);
+		}
+	}
+}
+
+void moveChipLeftRight(void)
+{
+	bool direction = LCD_touchedLeftRight();
+	if(direction == 0) //left
+	{
+		for(int i=0; i < 6; i++)
+		{
+			if(currentColum[i] == 1)
+			{
+				currentColum[i] = 0;
+				currentColum[i-1] = 1;
+			}
+		}
+	}
+	else //right
+	{
+		for(int i=0; i < 6; i++)
+		{
+			if(currentColum[i] == 1)
+			{
+				currentColum[i] = 0;
+				currentColum[i+1] = 1;
+			}
+		}
+	}
+	displayCurrentDropCol();
 }
 #endif // COMPILE_TOUCH_FUNCTIONS
 

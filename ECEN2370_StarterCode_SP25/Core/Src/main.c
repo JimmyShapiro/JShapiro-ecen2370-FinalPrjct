@@ -114,12 +114,16 @@ int main(void)
   //LCD_singlePlayerScreen();
   //LCD_twoPlayerScreen();
 
-  LCD_touchedButtonPolling();
+  //printf("Does this print? bouta go into touch poll thing");
 
-  HAL_Delay(5000);
+  //LCD_touchedButtonPolling();
+
+  //HAL_Delay(5000);
   /* USER CODE END 2 */
 #if COMPILE_TOUCH_FUNCTIONS == 1 // This block will need to be deleted
   //LCD_Touch_Polling_Demo(); // This function Will not return
+  LCD_touchedButtonPolling();
+  //LCD_touchedLeftRight();
 #endif
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
