@@ -32,6 +32,8 @@ void moveChipLeftRight(void);
 void dropChip(void);
 bool checkIfOver(void);
 void twoPlayerMode(void);
+void ScoreBoardScreen(void);
+void pollingForNewGame(void);
 
 // Button functions
 void appDelay(uint32_t time_in);

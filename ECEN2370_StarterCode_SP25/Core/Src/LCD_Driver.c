@@ -293,6 +293,12 @@ void LCD_DisplayChar(uint16_t Xpos, uint16_t Ypos, uint8_t Ascii)
   LCD_Draw_Char(Xpos, Ypos, &LCD_Currentfonts->table[Ascii * LCD_Currentfonts->Height]);
 }
 
+void LCD_DisplayNum(uint16_t Xpos, uint16_t Ypos, uint8_t Ascii)
+{
+  Ascii -= 49;
+  LCD_Draw_Char(Xpos, Ypos, &LCD_Currentfonts->table[Ascii * LCD_Currentfonts->Height]);
+}
+
 void visualDemo(void)
 {
 	uint16_t x;
