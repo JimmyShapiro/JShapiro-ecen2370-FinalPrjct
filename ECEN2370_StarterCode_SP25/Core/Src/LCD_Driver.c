@@ -445,7 +445,7 @@ void startScreen(void)
 	LCD_DisplayChar(159,20,'u');
 	LCD_DisplayChar(171,20,'r');
 
-	HAL_Delay(5000);
+	//HAL_Delay(5000);
 
 }
 

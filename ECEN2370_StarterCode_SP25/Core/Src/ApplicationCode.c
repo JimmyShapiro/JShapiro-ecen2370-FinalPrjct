@@ -16,9 +16,11 @@ extern void initialise_monitor_handles(void);
 static STMPE811_TouchData StaticTouchData;
 #endif // COMPILE_TOUCH_FUNCTIONS
 
-static bool currentColum[6];
-//static bool gameBoardArr[5][6];
+static bool currentColum[7];
+static int gameBoardArr[6][7];
 static bool currentPlayer;
+
+static bool turnComplete;
 
 void ApplicationInit(void)
 {
@@ -26,6 +28,8 @@ void ApplicationInit(void)
     LTCD__Init();
     LTCD_Layer_Init(0);
     LCD_Clear(0,LCD_COLOR_WHITE);
+
+    appButton_Int_Init();
 
     #if COMPILE_TOUCH_FUNCTIONS == 1
 	InitializeLCDTouch();
@@ -88,6 +92,7 @@ void LCD_touchedButtonPolling(void)
 				{
 					LCD_Clear(0, LCD_COLOR_WHITE);
 					LCD_twoPlayerScreen();
+					twoPlayerMode();
 					printf("Two Player Button Pressed");
 					buttonChosen = 1;
 				}
@@ -112,13 +117,13 @@ bool LCD_touchedLeftRight(void)
 {
 	bool sideChosen = 0;
 	printf("In LEFT RIGHT");
-	LCD_Clear(0, LCD_COLOR_BLACK);
+	//LCD_Clear(0, LCD_COLOR_BLACK);
 	while (1)
 	{
 		//startScreen();
 		if (returnTouchStateAndLocation(&StaticTouchData) == STMPE811_State_Pressed)
 		{
-			LCD_Clear(0, LCD_COLOR_WHITE);
+			//LCD_Clear(0, LCD_COLOR_WHITE);
 			/* Touch valid */
 			if(StaticTouchData.x <= 120)
 			{
@@ -140,16 +145,16 @@ bool LCD_touchedLeftRight(void)
 				printf("\nX: %03d\nY: %03d\n", StaticTouchData.x, StaticTouchData.y);
 			}
 		}
-		else
-		{
+		//else
+		//{
 			/* Touch not pressed */
-			printf("Not Pressed\n\n");
-			LCD_Clear(0, LCD_COLOR_BLACK);
-			HAL_Delay(500);
-			LCD_Clear(0, LCD_COLOR_RED);
-			HAL_Delay(500);
+		//	printf("Not Pressed\n\n");
+		//	LCD_Clear(0, LCD_COLOR_BLACK);
+		//	HAL_Delay(500);
+		//	LCD_Clear(0, LCD_COLOR_RED);
+		//	HAL_Delay(500);
 			//startScreen();
-		}
+		//}
 	}
 }
 
@@ -173,7 +178,7 @@ void LCD_Touch_Polling_Demo(void)
 
 void displayCurrentDropCol(void)
 {
-	for(int i=0; i < 6; i++)
+	for(int i=0; i < 7; i++)
 	{
 		uint16_t XPosFill = 0;
 		XPosFill = (45 + (i*25));
@@ -197,12 +202,13 @@ void displayCurrentDropCol(void)
 
 void moveChipLeftRight(void)
 {
+
 	bool direction = LCD_touchedLeftRight();
 	if(direction == 0) //left
 	{
-		for(int i=0; i < 6; i++)
+		for(int i=0; i < 7; i++)
 		{
-			if(currentColum[i] == 1)
+			if(currentColum[i] == 1 && i != 0)
 			{
 				currentColum[i] = 0;
 				currentColum[i-1] = 1;
@@ -211,16 +217,180 @@ void moveChipLeftRight(void)
 	}
 	else //right
 	{
-		for(int i=0; i < 6; i++)
+		for(int i=0; i < 7; i++)
 		{
-			if(currentColum[i] == 1)
+			if(currentColum[i] == 1 && i != 6)
 			{
 				currentColum[i] = 0;
 				currentColum[i+1] = 1;
+				i++;
 			}
 		}
 	}
 	displayCurrentDropCol();
 }
+
+void dropChip(void)
+{
+	bool chipDropped = 0;
+	bool fullCol = 1;
+	int currentColIndx = 0;
+	uint16_t XPosFill = 0;
+	uint16_t YPosFill = 0;
+
+	for(int i=0; i < 7; i++)
+	{
+		if(currentColum[i] == 1)
+		{
+			currentColIndx = i;
+			XPosFill = (45 + (i*25));
+		}
+	}
+	while(chipDropped != 1)
+	{
+		for(int j=0; j < 6; j++)
+		{
+			if(gameBoardArr[5-j][currentColIndx] == 0)
+			{
+				fullCol = 0;
+				YPosFill = (146 + ((5-j)*26));
+				if(currentPlayer == PlayerOne)
+				{
+					LCD_Draw_Circle_Fill(XPosFill, YPosFill, 8, LCD_COLOR_RED);
+					LCD_Draw_Circle_Fill(XPosFill, 100, 8, LCD_COLOR_YELLOW);
+					currentPlayer = PlayerTwo;
+					gameBoardArr[5-j][currentColIndx] = 1;
+					chipDropped = 1;
+					break;
+				}
+				else
+				{
+					LCD_Draw_Circle_Fill(XPosFill, YPosFill, 8, LCD_COLOR_YELLOW);
+					LCD_Draw_Circle_Fill(XPosFill, 100, 8, LCD_COLOR_RED);
+					currentPlayer = PlayerOne;
+					gameBoardArr[5-j][currentColIndx] = 2;
+					chipDropped = 1;
+					break;
+				}
+			}
+		}
+		if(fullCol)
+		{
+			chipDropped = 1;
+		}
+	}
+}
+
+bool checkIfOver(void)
+{
+	bool gameOver = 0;
+	bool full = 1;
+	for(int i=0; i < 6; i++)
+	{
+		for(int j=0; j < 7; j++)
+		{
+			if(gameBoardArr[i][j] != 0)
+			{
+				if((gameBoardArr[i][j] == gameBoardArr[i][j+1]) && (gameBoardArr[i][j+1]== gameBoardArr[i][j+2]) &&
+					(gameBoardArr[i][j+2] == gameBoardArr[i][j+3]))
+				{
+					gameOver = 1;
+					turnComplete = 1;
+					break;
+				}
+				else if((gameBoardArr[i][j] == gameBoardArr[i+1][j]) && (gameBoardArr[i+1][j]== gameBoardArr[i+2][j]) &&
+						(gameBoardArr[i+2][j] == gameBoardArr[i+3][j]))
+				{
+					gameOver = 1;
+					turnComplete = 1;
+					break;
+				}
+				else if((gameBoardArr[i][j] == gameBoardArr[i+1][j+1]) && (gameBoardArr[i+1][j+1]== gameBoardArr[i+2][j+2]) &&
+						(gameBoardArr[i+2][j+2] == gameBoardArr[i+3][j+3]))
+				{
+					gameOver = 1;
+					turnComplete = 1;
+					break;
+				}
+				else if((gameBoardArr[i][j] == gameBoardArr[i-1][j-1]) && (gameBoardArr[i-1][j-1]== gameBoardArr[i-2][j-2]) &&
+						(gameBoardArr[i-2][j-2] == gameBoardArr[i-3][j-3]))
+				{
+					gameOver = 1;
+					turnComplete = 1;
+					break;
+				}
+			}
+			else
+			{
+				full = 0;
+			}
+		}
+	}
+
+	if(full)
+	{
+		gameOver = 1;
+		turnComplete = 1;
+	}
+
+	return gameOver;
+}
+
+void twoPlayerMode(void)
+{
+	bool end = 0;
+	while(end != 1)
+	{
+		turnComplete = 0;
+		end = checkIfOver();
+		while(turnComplete != 1)
+		{
+			//end = checkIfOver();
+			moveChipLeftRight();
+		}
+	}
+}
+
+
+
+//below is button stuff
+
+#if USE_INTERRUPT_FOR_BUTTON == RESET
+void appButtonInit()
+{
+	Button_Init();
+}
+
+void executeButtonPollingRoutine()
+{
+	if(Button_Pressed() == 1)
+	{
+		TurnOnLED(GPIO_PIN_NUM_13);
+	}else
+	{
+		TurnOffLED(GPIO_PIN_NUM_13);
+	}
+}
+
+#else
+void appButton_Int_Init()
+{
+	Button_Int_Init();
+}
+#endif
+
+void EXTI0_IRQHandler()
+{
+	IRQ_INTR_Disable(EXTI0_IRQ_NUMBER);
+	//ToggleLED(GPIO_PIN_NUM_13);
+	//EXTI_INTRP_Clear(Button_Pin_Num);
+	addSchedulerEvent(DROP_CHIP);       //MAYBE NEED THIS?
+	dropChip();
+	turnComplete = 1;
+	__HAL_GPIO_EXTI_CLEAR_FLAG(GPIO_PIN_0);
+	IRQ_INTR_Enable(EXTI0_IRQ_NUMBER);
+}
+
+
 #endif // COMPILE_TOUCH_FUNCTIONS
 
