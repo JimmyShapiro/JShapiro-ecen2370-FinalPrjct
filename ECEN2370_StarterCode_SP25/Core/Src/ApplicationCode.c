@@ -18,9 +18,10 @@ static STMPE811_TouchData StaticTouchData;
 
 static bool currentColum[7];
 static int gameBoardArr[6][7];
-static bool currentPlayer;
-
+static int currentPlayer;
+static int winner;
 static bool turnComplete;
+static bool gameComplete;
 
 void ApplicationInit(void)
 {
@@ -83,22 +84,22 @@ void LCD_touchedButtonPolling(void)
 			{
 				if(StaticTouchData.y >= 70 && StaticTouchData.y <= 120)
 				{
+					printf("One Player Button Pressed\n");
 					LCD_Clear(0, LCD_COLOR_WHITE);
 					LCD_singlePlayerScreen();
-					printf("One Player Button Pressed");
 					buttonChosen = 1;
 				}
 				else if(StaticTouchData.y >= 10 && StaticTouchData.y <= 60)
 				{
+					printf("Two Player Button Pressed\n");
 					LCD_Clear(0, LCD_COLOR_WHITE);
 					LCD_twoPlayerScreen();
 					twoPlayerMode();
-					printf("Two Player Button Pressed");
 					buttonChosen = 1;
 				}
 				else
 				{
-					printf("Touch Outside of Target Areas");
+					printf("Touch Outside of Target Areas\n");
 					//startScreen();
 				}
 			}
@@ -116,7 +117,7 @@ void LCD_touchedButtonPolling(void)
 bool LCD_touchedLeftRight(void)
 {
 	bool sideChosen = 0;
-	printf("In LEFT RIGHT");
+	printf("In LEFT RIGHT\n");
 	//LCD_Clear(0, LCD_COLOR_BLACK);
 	while (1)
 	{
@@ -127,21 +128,21 @@ bool LCD_touchedLeftRight(void)
 			/* Touch valid */
 			if(StaticTouchData.x <= 120)
 			{
-				printf("Left Side chosen");
+				printf("Left Side chosen\n");
 				printf("\nX: %03d\nY: %03d\n", StaticTouchData.x, StaticTouchData.y);
 				sideChosen = 0;
 				return sideChosen;
 			}
 			else if(StaticTouchData.x > 120)
 			{
-				printf("Right Side chosen");
+				printf("Right Side chosen\n");
 				printf("\nX: %03d\nY: %03d\n", StaticTouchData.x, StaticTouchData.y);
 				sideChosen = 1;
 				return sideChosen;
 			}
 			else
 			{
-				printf("Something is very wrong");
+				printf("Something is very wrong\n");
 				printf("\nX: %03d\nY: %03d\n", StaticTouchData.x, StaticTouchData.y);
 			}
 		}
@@ -188,7 +189,7 @@ void displayCurrentDropCol(void)
 			{
 				LCD_Draw_Circle_Fill(XPosFill, 100, 8, LCD_COLOR_RED);
 			}
-			else
+			else if(currentPlayer == PlayerTwo)
 			{
 				LCD_Draw_Circle_Fill(XPosFill, 100, 8, LCD_COLOR_YELLOW);
 			}
@@ -263,12 +264,17 @@ void dropChip(void)
 					chipDropped = 1;
 					break;
 				}
-				else
+				else if(currentPlayer == PlayerTwo)
 				{
 					LCD_Draw_Circle_Fill(XPosFill, YPosFill, 8, LCD_COLOR_YELLOW);
 					LCD_Draw_Circle_Fill(XPosFill, 100, 8, LCD_COLOR_RED);
 					currentPlayer = PlayerOne;
 					gameBoardArr[5-j][currentColIndx] = 2;
+					chipDropped = 1;
+					break;
+				}
+				else
+				{
 					chipDropped = 1;
 					break;
 				}
@@ -289,34 +295,51 @@ bool checkIfOver(void)
 	{
 		for(int j=0; j < 7; j++)
 		{
-			if(gameBoardArr[i][j] != 0)
+			int compChip = gameBoardArr[i][j];
+			if(compChip != 0)
 			{
-				if((gameBoardArr[i][j] == gameBoardArr[i][j+1]) && (gameBoardArr[i][j+1]== gameBoardArr[i][j+2]) &&
-					(gameBoardArr[i][j+2] == gameBoardArr[i][j+3]))
+				if(j <= 3 && (compChip == gameBoardArr[i][j+1]) &&
+					(compChip == gameBoardArr[i][j+2]) &&
+					(compChip == gameBoardArr[i][j+3]))
 				{
-					gameOver = 1;
+					printf("Triggered Horizontal\n");
+					currentPlayer = 3; // This prevents dropChip effectively disabling the button
+					winner = compChip;
 					turnComplete = 1;
+					gameOver = 1;
 					break;
 				}
-				else if((gameBoardArr[i][j] == gameBoardArr[i+1][j]) && (gameBoardArr[i+1][j]== gameBoardArr[i+2][j]) &&
-						(gameBoardArr[i+2][j] == gameBoardArr[i+3][j]))
+				else if(i <= 2 && (compChip == gameBoardArr[i+1][j]) &&
+						(compChip == gameBoardArr[i+2][j]) &&
+						(compChip == gameBoardArr[i+3][j]))
 				{
-					gameOver = 1;
+					printf("Triggered Vertical\n");
+					currentPlayer = 3; // This prevents dropChip effectively disabling the button
+					winner = compChip;
 					turnComplete = 1;
+					gameOver = 1;
 					break;
 				}
-				else if((gameBoardArr[i][j] == gameBoardArr[i+1][j+1]) && (gameBoardArr[i+1][j+1]== gameBoardArr[i+2][j+2]) &&
-						(gameBoardArr[i+2][j+2] == gameBoardArr[i+3][j+3]))
+				else if(j <= 3 && i <= 2 && (compChip == gameBoardArr[i+1][j+1]) &&
+						(compChip == gameBoardArr[i+2][j+2]) &&
+						(compChip == gameBoardArr[i+3][j+3]))
 				{
-					gameOver = 1;
+					printf("Triggered Down Right\n");
+					currentPlayer = 3; // This prevents dropChip effectively disabling the button
+					winner = compChip;
 					turnComplete = 1;
+					gameOver = 1;
 					break;
 				}
-				else if((gameBoardArr[i][j] == gameBoardArr[i-1][j-1]) && (gameBoardArr[i-1][j-1]== gameBoardArr[i-2][j-2]) &&
-						(gameBoardArr[i-2][j-2] == gameBoardArr[i-3][j-3]))
+				else if(j <= 3 && i >= 3 && (compChip == gameBoardArr[i-1][j+1]) &&
+						(compChip == gameBoardArr[i-2][j+2]) &&
+						(compChip == gameBoardArr[i-3][j+3]))
 				{
-					gameOver = 1;
+					printf("Triggered Up Right\n");
+					currentPlayer = 3; // This prevents dropChip effectively disabling the button
+					winner = compChip;
 					turnComplete = 1;
+					gameOver = 1;
 					break;
 				}
 			}
@@ -329,8 +352,11 @@ bool checkIfOver(void)
 
 	if(full)
 	{
-		gameOver = 1;
+		printf("Triggered Tie\n");
+		currentPlayer = 3;
+		winner = 0;
 		turnComplete = 1;
+		gameOver = 1;
 	}
 
 	return gameOver;
@@ -338,46 +364,88 @@ bool checkIfOver(void)
 
 void twoPlayerMode(void)
 {
-	bool end = 0;
-	while(end != 1)
+	while(gameComplete != 1)
 	{
 		turnComplete = 0;
-		end = checkIfOver();
 		while(turnComplete != 1)
 		{
 			//end = checkIfOver();
 			moveChipLeftRight();
 		}
 	}
-}
+	if(winner == 1)
+	{
+		LCD_Clear(0,LCD_COLOR_RED);
+		LCD_SetTextColor(LCD_COLOR_BLACK);
+		LCD_SetFont(&Font16x24);
 
+		LCD_DisplayChar(68,160,'R');
+		LCD_DisplayChar(83,160,'e');
+		LCD_DisplayChar(96,160,'d');
+
+		LCD_DisplayChar(113,160,'W');
+		LCD_DisplayChar(123,160,'i');
+		LCD_DisplayChar(131,160,'n');
+		LCD_DisplayChar(141,160,'s');
+		LCD_DisplayChar(149,160,'!');
+	}
+	else if(winner == 2)
+	{
+		LCD_Clear(0,LCD_COLOR_YELLOW);
+		LCD_SetTextColor(LCD_COLOR_BLACK);
+		LCD_SetFont(&Font16x24);
+
+		LCD_DisplayChar(58,160,'Y');
+		LCD_DisplayChar(73,160,'e');
+		LCD_DisplayChar(83,160,'l');
+		LCD_DisplayChar(90,160,'l');
+		LCD_DisplayChar(98,160,'o');
+		LCD_DisplayChar(111,160,'w');
+
+		LCD_DisplayChar(130,160,'W');
+		LCD_DisplayChar(143,160,'i');
+		LCD_DisplayChar(151,160,'n');
+		LCD_DisplayChar(163,160,'s');
+		LCD_DisplayChar(170,160,'!');
+	}
+	else
+	{
+		LCD_Clear(0,LCD_COLOR_WHITE);
+		LCD_SetTextColor(LCD_COLOR_BLACK);
+		LCD_SetFont(&Font16x24);
+
+		LCD_DisplayChar(58,160,'T');
+		LCD_DisplayChar(73,160,'i');
+		LCD_DisplayChar(83,160,'e');
+	}
+}
 
 
 //below is button stuff
 
-#if USE_INTERRUPT_FOR_BUTTON == RESET
-void appButtonInit()
-{
-	Button_Init();
-}
-
-void executeButtonPollingRoutine()
-{
-	if(Button_Pressed() == 1)
-	{
-		TurnOnLED(GPIO_PIN_NUM_13);
-	}else
-	{
-		TurnOffLED(GPIO_PIN_NUM_13);
-	}
-}
-
-#else
+//#if USE_INTERRUPT_FOR_BUTTON == RESET
+//void appButtonInit()
+//{
+//	Button_Init();
+//}
+//
+//void executeButtonPollingRoutine()
+//{
+//	if(Button_Pressed() == 1)
+//	{
+//		TurnOnLED(GPIO_PIN_NUM_13);
+//	}else
+//	{
+//		TurnOffLED(GPIO_PIN_NUM_13);
+//	}
+//}
+//
+//#else
 void appButton_Int_Init()
 {
 	Button_Int_Init();
 }
-#endif
+//#endif
 
 void EXTI0_IRQHandler()
 {
@@ -387,6 +455,7 @@ void EXTI0_IRQHandler()
 	addSchedulerEvent(DROP_CHIP);       //MAYBE NEED THIS?
 	dropChip();
 	turnComplete = 1;
+	gameComplete = checkIfOver();
 	__HAL_GPIO_EXTI_CLEAR_FLAG(GPIO_PIN_0);
 	IRQ_INTR_Enable(EXTI0_IRQ_NUMBER);
 }

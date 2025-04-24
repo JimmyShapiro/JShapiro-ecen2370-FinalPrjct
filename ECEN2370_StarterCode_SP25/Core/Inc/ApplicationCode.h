@@ -16,8 +16,8 @@
 #ifndef INC_APPLICATIONCODE_H_
 #define INC_APPLICATIONCODE_H_
 
-#define PlayerOne 0
-#define PlayerTwo 1
+#define PlayerOne 1
+#define PlayerTwo 2
 #define USE_INTERRUPT_FOR_BUTTON 1
 
 void ApplicationInit(void);
