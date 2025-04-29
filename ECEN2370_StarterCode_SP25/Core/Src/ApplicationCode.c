@@ -445,6 +445,7 @@ bool checkIfOver(void)
 void twoPlayerMode(void)
 {
 	gameStrtTime = HAL_GetTick();
+	// printf("Start Time: %lu ", gameStrtTime);
 	while(gameComplete != 1)
 	{
 		turnComplete = 0;
@@ -455,6 +456,9 @@ void twoPlayerMode(void)
 	}
 	if(winner == 1)
 	{
+		// printf("Start Time: %lu ", gameStrtTime);
+		// printf("End Time: %lu ", gameEndTime);
+
 		LCD_Clear(0,LCD_COLOR_RED);
 		LCD_SetTextColor(LCD_COLOR_BLACK);
 		LCD_SetFont(&Font16x24);
@@ -477,6 +481,9 @@ void twoPlayerMode(void)
 	}
 	else if(winner == 2)
 	{
+		// printf("Start Time: %lu ", gameStrtTime);
+		// printf("End Time: %lu ", gameEndTime);
+
 		LCD_Clear(0,LCD_COLOR_YELLOW);
 		LCD_SetTextColor(LCD_COLOR_BLACK);
 		LCD_SetFont(&Font16x24);
@@ -502,6 +509,9 @@ void twoPlayerMode(void)
 	}
 	else
 	{
+		// printf("Start Time: %lu ", gameStrtTime);
+		// printf("End Time: %lu ", gameEndTime);
+
 		LCD_Clear(0,LCD_COLOR_WHITE);
 		LCD_SetTextColor(LCD_COLOR_BLACK);
 		LCD_SetFont(&Font16x24);
@@ -573,7 +583,7 @@ void ScoreBoardScreen(void)
 	uint32_t gameTime = 0;
 	gameTime = (gameEndTime - gameStrtTime) / 1000;
 	char Tbuff[8]  = {0};
-	sprintf(Tbuff, "%ld", gameTime);
+	sprintf(Tbuff, "%lu", gameTime);
 	//LCD_DisplayChar(140,140, Tbuff[0]);
 
 	for (int i = 0; Tbuff[i] != '\0'; i++)
@@ -1139,6 +1149,9 @@ void onePlayerMode(void)
 	}
 	if(winner == 1)
 	{
+		// printf("Start Time: %lu ", gameStrtTime);
+		// printf("End Time: %lu ", gameEndTime);
+
 		LCD_Clear(0,LCD_COLOR_RED);
 		LCD_SetTextColor(LCD_COLOR_BLACK);
 		LCD_SetFont(&Font16x24);
@@ -1162,6 +1175,9 @@ void onePlayerMode(void)
 	}
 	else if(winner == 2)
 	{
+		// printf("Start Time: %lu ", gameStrtTime);
+		// printf("End Time: %lu ", gameEndTime);
+
 		LCD_Clear(0,LCD_COLOR_YELLOW);
 		LCD_SetTextColor(LCD_COLOR_BLACK);
 		LCD_SetFont(&Font16x24);
@@ -1187,6 +1203,9 @@ void onePlayerMode(void)
 	}
 	else
 	{
+		// printf("Start Time: %lu ", gameStrtTime);
+		// printf("End Time: %lu ", gameEndTime);
+
 		LCD_Clear(0,LCD_COLOR_WHITE);
 		LCD_SetTextColor(LCD_COLOR_BLACK);
 		LCD_SetFont(&Font16x24);
@@ -1236,7 +1255,7 @@ void EXTI0_IRQHandler()
 	dropChip();
 	turnComplete = 1;
 	checkIfOver();
-	printGameBoard();
+	//printGameBoard();
 	__HAL_GPIO_EXTI_CLEAR_FLAG(GPIO_PIN_0);
 	IRQ_INTR_Enable(EXTI0_IRQ_NUMBER);
 }

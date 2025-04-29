@@ -14,9 +14,9 @@
 ../Core/Src/ApplicationCode.c:300:6:dropChip	10
 ../Core/Src/ApplicationCode.c:365:6:checkIfOver	23
 ../Core/Src/ApplicationCode.c:445:6:twoPlayerMode	5
-../Core/Src/ApplicationCode.c:519:6:ScoreBoardScreen	4
-../Core/Src/ApplicationCode.c:585:6:pollingForNewGame	10
-../Core/Src/ApplicationCode.c:634:6:AIplayer	169
-../Core/Src/ApplicationCode.c:1125:6:onePlayerMode	5
-../Core/Src/ApplicationCode.c:1224:6:appButton_Int_Init	1
-../Core/Src/ApplicationCode.c:1230:6:EXTI0_IRQHandler	1
+../Core/Src/ApplicationCode.c:529:6:ScoreBoardScreen	4
+../Core/Src/ApplicationCode.c:595:6:pollingForNewGame	10
+../Core/Src/ApplicationCode.c:644:6:AIplayer	169
+../Core/Src/ApplicationCode.c:1135:6:onePlayerMode	5
+../Core/Src/ApplicationCode.c:1243:6:appButton_Int_Init	1
+../Core/Src/ApplicationCode.c:1249:6:EXTI0_IRQHandler	1

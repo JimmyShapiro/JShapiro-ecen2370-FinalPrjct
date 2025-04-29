@@ -14,9 +14,9 @@
 ../Core/Src/ApplicationCode.c:300:6:dropChip	32	static
 ../Core/Src/ApplicationCode.c:365:6:checkIfOver	24	static
 ../Core/Src/ApplicationCode.c:445:6:twoPlayerMode	8	static
-../Core/Src/ApplicationCode.c:519:6:ScoreBoardScreen	56	static
-../Core/Src/ApplicationCode.c:585:6:pollingForNewGame	24	static
-../Core/Src/ApplicationCode.c:634:6:AIplayer	64	static
-../Core/Src/ApplicationCode.c:1125:6:onePlayerMode	8	static
-../Core/Src/ApplicationCode.c:1224:6:appButton_Int_Init	8	static
-../Core/Src/ApplicationCode.c:1230:6:EXTI0_IRQHandler	8	static
+../Core/Src/ApplicationCode.c:529:6:ScoreBoardScreen	56	static
+../Core/Src/ApplicationCode.c:595:6:pollingForNewGame	24	static
+../Core/Src/ApplicationCode.c:644:6:AIplayer	64	static
+../Core/Src/ApplicationCode.c:1135:6:onePlayerMode	8	static
+../Core/Src/ApplicationCode.c:1243:6:appButton_Int_Init	8	static
+../Core/Src/ApplicationCode.c:1249:6:EXTI0_IRQHandler	8	static
