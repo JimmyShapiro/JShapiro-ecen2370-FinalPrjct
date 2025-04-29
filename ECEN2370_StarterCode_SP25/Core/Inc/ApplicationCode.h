@@ -16,6 +16,9 @@
 #ifndef INC_APPLICATIONCODE_H_
 #define INC_APPLICATIONCODE_H_
 
+#define ONEPLAYER 1
+#define TWOPLAYER 2
+
 #define PlayerOne 1
 #define PlayerTwo 2
 #define USE_INTERRUPT_FOR_BUTTON 1
@@ -23,17 +26,22 @@
 void ApplicationInit(void);
 void LCD_Visual_Demo(void);
 void LCD_startScreen(void);
+void printGameBoard(void);
 void LCD_singlePlayerScreen(void);
 void LCD_twoPlayerScreen(void);
 void LCD_touchedButtonPolling(void);
 bool LCD_touchedLeftRight(void);
 void displayCurrentDropCol(void);
+void displayCurrentDropColOnePlayer(void);
 void moveChipLeftRight(void);
+void moveChipLeftRightOnePlayer(void);
 void dropChip(void);
 bool checkIfOver(void);
 void twoPlayerMode(void);
 void ScoreBoardScreen(void);
 void pollingForNewGame(void);
+void AIplayer(void);
+void onePlayerMode(void);
 
 // Button functions
 void appDelay(uint32_t time_in);
