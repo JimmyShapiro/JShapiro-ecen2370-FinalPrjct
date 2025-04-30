@@ -59,7 +59,19 @@ void LCD_startScreen(void)
 
 void printGameBoard(void)
 {
-    printf("Board:\n");
+	printf("0,0: ");
+	printf("%d ", gameBoardArr[0][0]);
+	printf("\n");
+	printf("5,0: ");
+	printf("%d ", gameBoardArr[5][0]);
+	printf("\n");
+	printf("0,6: ");
+	printf("%d ", gameBoardArr[0][6]);
+	printf("\n");
+	printf("Board:\n");
+	printf("5,6: ");
+	printf("%d ", gameBoardArr[5][6]);
+	printf("\n");
     for (int i = 0; i < 6; i++)  // Rows
     {
         for (int j = 0; j < 7; j++)  // Columns
@@ -70,6 +82,11 @@ void printGameBoard(void)
     }
 }
 
+
+/**
+ *  Displays Single player screen, inicializes static variables for start of game
+ *  @param void
+ */
 void LCD_singlePlayerScreen(void)
 {
 	singlePlayerScreen();
@@ -731,9 +748,9 @@ void AIplayer(void)
 						}
 					}
 					// Down Right 3 in a row check
-					else if(i <= 1 && j <= 3 && compChip == gameBoardArr[i+1][j+1] && compChip == gameBoardArr[i+2][j+2])
+					else if(i <= 3 && j <= 4 && compChip == gameBoardArr[i+1][j+1] && compChip == gameBoardArr[i+2][j+2])
 					{
-						if(gameBoardArr[i+3][j+3] == 0 && (i+3 == 5 || gameBoardArr[i+4][j+3] != 0)) // is down right space open and has something below it
+						if(i <= 2 && j <= 3 && gameBoardArr[i+3][j+3] == 0 && (i+3 == 5 || gameBoardArr[i+4][j+3] != 0)) // is down right space open and has something below it
 						{
 							XPosFill = (45 + ((j+3)*25));
 							YPosFill = (146 + ((i+3)*26));
@@ -835,9 +852,9 @@ void AIplayer(void)
 						}
 					}
 					// Down Right 3 in a row check
-					else if(i <= 1 && j <= 3 && compChip == gameBoardArr[i+1][j+1] && compChip == gameBoardArr[i+2][j+2])
+					else if(i <= 1 && j <= 4 && compChip == gameBoardArr[i+1][j+1] && compChip == gameBoardArr[i+2][j+2])
 					{
-						if(gameBoardArr[i+3][j+3] == 0 && (i+3 == 5 || gameBoardArr[i+4][j+3] != 0)) // is down right space open and has something below it
+						if(i <= 3 && gameBoardArr[i+3][j+3] == 0 && (i+3 == 5 || gameBoardArr[i+4][j+3] != 0)) // is down right space open and has something below it
 						{
 							XPosFill = (45 + ((j+3)*25));
 							YPosFill = (146 + ((i+3)*26));
@@ -868,10 +885,10 @@ void AIplayer(void)
 		{
 			for(int p=0; p < 7; p++)
 			{
-				if(gameBoardArr[k][p] == 1)
+				int compChip = gameBoardArr[k][p];
+				if(compChip == 1)
 				{
 					// Horizontal 2 in a row check
-					int compChip = gameBoardArr[k][p];
 					if(p <= 5 && compChip == gameBoardArr[k][p+1])
 					{
 						// drop left
@@ -921,9 +938,9 @@ void AIplayer(void)
 						}
 					}
 					// Up Right 2 in a row check
-					else if(k >= 2 && p <= 4 && compChip == gameBoardArr[k-1][p+1])
+					else if(k >= 1 && p <= 5 && compChip == gameBoardArr[k-1][p+1])
 					{
-						if(gameBoardArr[k-2][p+2] == 0 && gameBoardArr[k-1][p+2] != 0) // is up right space open and has something below it
+						if(k >= 2 && p <= 4 && gameBoardArr[k-2][p+2] == 0 && gameBoardArr[k-1][p+2] != 0) // is up right space open and has something below it
 						{
 							XPosFill = (45 + ((p+2)*25));
 							YPosFill = (146 + ((k-2)*26));
@@ -947,9 +964,9 @@ void AIplayer(void)
 						}
 					}
 					// Down Right 2 in a row check
-					else if(k <= 2 && p <= 3 && compChip == gameBoardArr[k+1][p+1])
+					else if(k <= 4 && p <= 5 && compChip == gameBoardArr[k+1][p+1])
 					{
-						if(gameBoardArr[k+2][p+2] == 0 && (k+2 == 5 || gameBoardArr[k+3][p+3] != 0)) // is down right space open and has something below it
+						if(k <= 3 && p <= 4 && gameBoardArr[k+2][p+2] == 0 && (k+2 == 5 || gameBoardArr[k+3][p+3] != 0)) // is down right space open and has something below it
 						{
 							XPosFill = (45 + ((p+2)*25));
 							YPosFill = (146 + ((k+2)*26));
@@ -1032,9 +1049,9 @@ void AIplayer(void)
 						}
 					}
 					// Up Right 2 in a row check
-					else if(r >= 2 && q <= 4 && compChip == gameBoardArr[r-1][q+1])
+					else if(r >= 1 && q <= 5 && compChip == gameBoardArr[r-1][q+1])
 					{
-						if(gameBoardArr[r-2][q+2] == 0 && gameBoardArr[r-1][q+2] != 0) // is up right space open and has something below it
+						if(r >= 2 && q <= 4 && gameBoardArr[r-2][q+2] == 0 && gameBoardArr[r-1][q+2] != 0) // is up right space open and has something below it
 						{
 							XPosFill = (45 + ((q+2)*25));
 							YPosFill = (146 + ((r-2)*26));
@@ -1058,9 +1075,9 @@ void AIplayer(void)
 						}
 					}
 					// Down Right 2 in a row check
-					else if(r <= 2 && q <= 3 && compChip == gameBoardArr[r+1][q+1])
+					else if(r <= 4 && q <= 5 && compChip == gameBoardArr[r+1][q+1])
 					{
-						if(gameBoardArr[r+2][q+2] == 0 && (r+2 == 5 || gameBoardArr[r+3][q+3] != 0)) // is down right space open and has something below it
+						if(r <= 3 && q <= 4 && gameBoardArr[r+2][q+2] == 0 && (r+2 == 5 || gameBoardArr[r+3][q+3] != 0)) // is down right space open and has something below it
 						{
 							XPosFill = (45 + ((q+2)*25));
 							YPosFill = (146 + ((r+2)*26));
@@ -1147,6 +1164,7 @@ void onePlayerMode(void)
 //			AIplayer();
 //		}
 	}
+	gameEndTime = HAL_GetTick();
 	if(winner == 1)
 	{
 		// printf("Start Time: %lu ", gameStrtTime);
